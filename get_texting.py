@@ -17,17 +17,17 @@ firefox_options = Options()
 # Run Firefox in headless mode (without GUI)
 firefox_options.binary_location = binary_path
 firefox_options.add_argument('--no-sandbox')
-firefox_options.add_argument('--headless')
+# firefox_options.add_argument('--headless')
 
 # Start the Firefox WebDriver
 driver = webdriver.Firefox(service=Service(webdriver_path), options=firefox_options)
+driver2 = webdriver.Firefox(service=Service(webdriver_path), options=firefox_options)
 
 # Load the web page using Selenium
 
  # Replace with the URL of the web page you want to scrape
 
 def get_text(url):
-    driver2 = webdriver.Firefox(service=Service(webdriver_path), options=firefox_options)
     filename = "texts\\"+str(uuid.uuid4())+".txt"
     driver2.get(url)
     div_element = driver2.find_element(By.XPATH,"//div[@class='docBody__container']")
@@ -41,8 +41,8 @@ def get_text(url):
 def writing_links(url):
     driver.get(url)
     s = 1
-    print(url+f"   page: {s} ")
     while True:
+        print(url+f"   page: {s} ")
         # Extract the HTML content from the page
         html_content = driver.page_source
 
@@ -65,6 +65,7 @@ def writing_links(url):
         try:
             element = driver.find_element(By.XPATH,"//a[@id=\"ucFoundActsControl_LinkButton1\"]") 
             element = element.click()
+            s = s+1
         except NoSuchElementException:
             break
     
@@ -92,4 +93,5 @@ for i in range(0,20):
 # print(links)
 
 # Close the Firefox WebDriver
+driver2.quit()
 driver.quit()
